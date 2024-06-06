@@ -1,4 +1,4 @@
-#### Ascii-art
+# Ascii-art
 
 ### Objectives
 
