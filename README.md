@@ -6,40 +6,49 @@ _Ascii-art is a program which consists in receiving a string as an argument and 
 
 What we mean by a graphic representation using ASCII, is to write the string received using ASCII characters, as you can see in the example below:
 
-```````````
-@@@@@@BB@@@@``^^``^^``@@BB$$@@BB$$
-@@%%$$$$^^^^WW&&8888&&^^""BBBB@@@@
-@@@@@@""WW8888&&WW888888WW``@@@@$$
-BB$$``&&&&WWWW8888&&&&8888&&``@@@@
-$$``&&WW88&&88&&&&8888&&88WW88``$$
-@@""&&&&&&&&88888888&&&&&&88&&``$$
-``````^^``^^^^^^````""^^``^^``^^``
-""WW^^@@@@^^``````^^BB@@^^``^^&&``
-^^&&^^@@````^^``&&``@@````^^^^&&``
-``WW&&^^""``^^WW&&&&""``^^^^&&88``
-^^8888&&&&&&WW88&&88WW&&&&88&&WW``
-@@``&&88888888WW&&WW88&&88WW88^^$$
-@@""88&&&&&&&&888888&&``^^&&88``$$
-@@@@^^&&&&&&""``^^^^^^8888&&^^@@@@
-@@@@@@^^888888&&88&&&&MM88^^BB$$$$
-@@@@@@BB````&&&&&&&&88""``BB@@BB$$
-$$@@$$$$$$$$``````````@@$$@@$$$$$$
-
-```````````
-
 - This project should handle an input with numbers, letters, spaces, special characters and \n.
 - Take a look at the ASCII manual.
 
-### Instructions
+Explain :
 
-1. Your project must be written in Go.
+```go
+for index, line := range asciiLines {
+		p := index / 9
+		modulo := index % 9
+		if modulo > 0 {
+			if asciiFileLines[p] == nil {
+				asciiFileLines[p] = make([]string, 8)
+			}
+			asciiFileLines[p][modulo-1] = line
+		}
+	}
+```
 
-2. The code must respect the good practices.
+To find the line :
 
-3. It is recommended to have test files for unit testing.
+- 9 / 9 = 1 modulo 9 % 9 = 0
+- 10 / 9 = 1.1111 modulo 10 % 9 = 1
+- 11 / 9 = 1.2222 modulo 11 % 9 = 2
+- 12 / 9 = 1.3333 modulo 12 % 9 = 3
+- ect...
 
-4. Some banner files with a specific graphical template representation using ASCII will be given. The files are formatted in a way that is not necessary to change them.
-
-- shadow
-- standard
-- thinkertoy
+```
+/ n° ligne fichier : 0 / n° ascii :0 / n° ligne :0
+      / n° ligne fichier : 1 / n° ascii :0 / n° ligne :1
+      / n° ligne fichier : 2 / n° ascii :0 / n° ligne :2
+      / n° ligne fichier : 3 / n° ascii :0 / n° ligne :3
+      / n° ligne fichier : 4 / n° ascii :0 / n° ligne :4
+      / n° ligne fichier : 5 / n° ascii :0 / n° ligne :5
+      / n° ligne fichier : 6 / n° ascii :0 / n° ligne :6
+      / n° ligne fichier : 7 / n° ascii :0 / n° ligne :7
+      / n° ligne fichier : 8 / n° ascii :0 / n° ligne :8
+/ n° ligne fichier : 9 / n° ascii :1 / n° ligne :0
+ _  / n° ligne fichier : 10 / n° ascii :1 / n° ligne :1
+| | / n° ligne fichier : 11 / n° ascii :1 / n° ligne :2
+| | / n° ligne fichier : 12 / n° ascii :1 / n° ligne :3
+| | / n° ligne fichier : 13 / n° ascii :1 / n° ligne :4
+|_| / n° ligne fichier : 14 / n° ascii :1 / n° ligne :5
+(_) / n° ligne fichier : 15 / n° ascii :1 / n° ligne :6
+    / n° ligne fichier : 16 / n° ascii :1 / n° ligne :7
+    / n° ligne fichier : 17 / n° ascii :1 / n° ligne :8
+```
