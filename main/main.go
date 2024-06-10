@@ -7,50 +7,96 @@ import (
 )
 
 func main() {
-	// File to read
-	filePath := "./standard.txt"
+
+	if len(os.Args) < 3 {
+		fmt.Println("Usage: program <arg1> <theme>")
+		return
+	}
 
 	inputText := os.Args[1]
+	theme := os.Args[2]
 
-	// Read the file
+	var filePath string
+
+	switch theme {
+	case "standard":
+		filePath = "./standard.txt"
+	case "shadow":
+		filePath = "./shadow.txt"
+	case "thinkertoy":
+		filePath = "./thinkertoy.txt"
+	default:
+		fmt.Println("Unknown theme:", theme)
+		return
+	}
+
+	inputText = strings.ReplaceAll(inputText, "\\n", "\n")
+
+	// Lire le fichier
 	ascii, err := os.ReadFile(filePath)
 	if err != nil {
 		fmt.Printf("Failed reading file: %s", err)
 		return
 	}
-	// Convert data to string
+	// Convertir les données en chaîne de caractères
 	asciiFileBuffer := string(ascii)
 
-	asciiFilePaint := strings.Split(asciiFileBuffer, "\n\n")
-	var asciiFileLines [][]string
-	for _, block := range asciiFilePaint {
-		asciiFileLines = append(asciiFileLines, strings.Split(block, "\n"))
+	// Séparer le contenu du fichier par des retours à la ligne
+	asciiLines := strings.Split(asciiFileBuffer, "\n")
+
+	// Créer une slice 2D pour stocker les lignes d'art ASCII
+	asciiFileLines := make([][]string, (len(asciiLines)+8)/9)
+
+	// Remplir la slice 2D avec les lignes du fichier ASCII
+	for index, line := range asciiLines {
+		partieEntiere := index / 9
+		modulo := index % 9
+		if modulo > 0 {
+			if asciiFileLines[partieEntiere] == nil {
+				asciiFileLines[partieEntiere] = make([]string, 8)
+			}
+			asciiFileLines[partieEntiere][modulo-1] = line
+		}
 	}
 
-	// Create the ASCII file index dynamically
+	// Créer l'index de fichier ASCII de manière dynamique
 	asciiFileIndex := make([]string, len(asciiFileLines))
 	for i := range asciiFileIndex {
 		asciiFileIndex[i] = string(rune(i + 32))
 	}
 
-	// Prepare output lines
+	// Préparer les lignes pour stocker la sortie d'art ASCII
 	lines := make([]string, 8)
 
-	// Process input text
-	for _, char := range inputText {
-
-		for i := 0; i < 8; i++ {
-			if char == '\n' {
-				lines[i] += asciiFileLines[char-32][i]
-			} else {
-				lines[i] += asciiFileLines[char-32][i]
+	for i := 0; i < len(inputText); i++ {
+		char := inputText[i]
+		if inputText[i] == '\n' {
+			printAndResetLines(lines)
+			if i+1 < len(inputText) && inputText[i+1] == '\n' {
+				printEmptyLines(1)
+				i++
 			}
-
+		} else {
+			for j := 0; j < 8; j++ {
+				lines[j] += asciiFileLines[char-32][j]
+			}
 		}
 	}
+	// Imprimer les lignes restantes
+	printAndResetLines(lines)
+}
 
-	// Print the resulting ASCII art
+func printAndResetLines(lines []string) {
 	for i := 0; i < 8; i++ {
-		fmt.Println(lines[i])
+		if lines[i] != "" {
+			fmt.Println(lines[i])
+			lines[i] = ""
+		}
+	}
+}
+
+func printEmptyLines(count int) {
+	for i := 0; i < count; i++ {
+		fmt.Println("")
 	}
 }

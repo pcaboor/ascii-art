@@ -9,7 +9,10 @@
       "type": "go",
       "request": "launch",
       "mode": "auto",
-      "program": "/home/student/ascii-art/main/"
+      "program": "/Users/pierrecaboor/ascii-art/main",
+      "args": [
+        "/Users/pierrecaboor/ascii-art"
+      ]
     }
   ]
 }
